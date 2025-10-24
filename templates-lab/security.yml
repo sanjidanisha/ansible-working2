@@ -1,0 +1,20 @@
+---
+- hosts: all
+  tasks:
+    - name: download transaction_list
+      block:
+      - file:
+        path: /home/ansible/lab-error-handling 
+        state: directory
+        mode : '0755'
+
+    - name : deploys the template to the correct location 
+      template:
+        src: hardened.j2
+        dest: /etc/sudoers.d/hardened
+        mode: '0440'
+        validate: /sbin/visudo -cf %s
+
+    - name: Display success message
+      debug:
+        msg: "hardened sudoers tempalte deplyed successfully"
